@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Servicio de PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: crud_fenix_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crud_fenix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - crud_fenix_network
+
+  # Servicio de la aplicación Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crud_fenix_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./storage:/var/www/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - crud_fenix_network
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=crud_fenix
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  crud_fenix_network:
+    driver: bridge
