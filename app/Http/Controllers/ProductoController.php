@@ -6,6 +6,9 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\ProductosExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductoController extends Controller
 {
@@ -174,9 +177,10 @@ class ProductoController extends Controller
     {
         $productos = Producto::orderBy('nombre')->get();
         
-        // Aquí se implementará la exportación a PDF
-        // Por ahora retornamos los datos para que el frontend maneje la exportación
-        return response()->json($productos);
+        $pdf = Pdf::loadView('productos.pdf', compact('productos'))
+            ->setPaper('a4', 'landscape');
+        
+        return $pdf->download('productos_' . now()->format('Y-m-d_His') . '.pdf');
     }
 
     /**
@@ -184,10 +188,9 @@ class ProductoController extends Controller
      */
     public function exportExcel()
     {
-        $productos = Producto::orderBy('nombre')->get();
-        
-        // Aquí se implementará la exportación a Excel
-        // Por ahora retornamos los datos para que el frontend maneje la exportación
-        return response()->json($productos);
+        return Excel::download(
+            new ProductosExport, 
+            'productos_' . now()->format('Y-m-d_His') . '.xlsx'
+        );
     }
 }
