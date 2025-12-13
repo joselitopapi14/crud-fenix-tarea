@@ -299,7 +299,7 @@ const deleteProductoImage = () => {
                     Filtros
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent class="w-80 bg-white/95 backdrop-blur-xl border-white/30">
+                <PopoverContent class="w-80 bg-white border-gray-200 text-gray-900 shadow-xl">
                   <div class="space-y-4">
                     <h4 class="font-medium leading-none">Filtrar productos</h4>
                     
@@ -380,7 +380,7 @@ const deleteProductoImage = () => {
                       No se encontraron productos
                     </td>
                   </tr>
-                  <tr v-for="producto in productos.data" :key="producto.id" class="border-b border-gray-200 transition-colors hover:bg-gray-100/50">
+                  <tr v-for="producto in productos.data" :key="producto.id" class="border-b border-gray-200 transition-colors hover:bg-gray-50/80">
                     <td class="p-4 align-middle font-medium">{{ producto.codigo }}</td>
                     <td class="p-4 align-middle">{{ producto.nombre }}</td>
                     <td class="p-4 align-middle text-center">
@@ -388,7 +388,7 @@ const deleteProductoImage = () => {
                         v-if="producto.imagen" 
                         @click="viewImage(producto)" 
                         size="icon"
-                        class="h-8 w-8 bg-black text-white hover:bg-gray-800"
+                        class="h-8 w-8 bg-black text-white hover:bg-gray-800 border-none shadow-sm"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -427,12 +427,12 @@ const deleteProductoImage = () => {
                     </td>
                     <td class="p-4 align-middle">
                       <div class="flex items-center justify-center gap-2">
-                        <Button @click="openEditDialog(producto)" size="icon" class="bg-black text-white hover:bg-gray-800">
+                        <Button @click="openEditDialog(producto)" size="icon" class="bg-black text-white hover:bg-gray-800 border-none shadow-sm">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
                         </Button>
-                        <Button @click="confirmDelete(producto)" size="icon" class="bg-black text-white hover:bg-red-600">
+                        <Button @click="confirmDelete(producto)" size="icon" class="bg-black text-white hover:bg-red-600 border-none shadow-sm">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
