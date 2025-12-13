@@ -385,7 +385,7 @@ const deleteProductoImage = () => {
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap">Código</th>
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground min-w-[150px]">Nombre</th>
                     <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden md:table-cell">Imagen</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden lg:table-cell">Presentación</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Presentación</th>
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden xl:table-cell">Marca</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Costo</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Venta</th>
@@ -403,12 +403,6 @@ const deleteProductoImage = () => {
                     <td class="p-4 align-middle font-medium whitespace-nowrap">{{ producto.codigo }}</td>
                     <td class="p-4 align-middle min-w-[150px]">
                       <div class="font-medium">{{ producto.nombre }}</div>
-                      <div class="lg:hidden text-xs text-muted-foreground mt-1">
-                        <span v-if="producto.marca" class="mr-2">{{ producto.marca }}</span>
-                        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground text-[10px]">
-                          {{ producto.presentacion_tipo }}
-                        </span>
-                      </div>
                     </td>
                     <td class="p-4 align-middle text-center hidden md:table-cell">
                       <Button 
@@ -424,7 +418,7 @@ const deleteProductoImage = () => {
                       </Button>
                       <span v-else class="text-muted-foreground text-xs">-</span>
                     </td>
-                    <td class="p-4 align-middle hidden lg:table-cell">
+                    <td class="p-4 align-middle">
                       <Badge variant="secondary">
                         {{ producto.presentacion_tipo }}
                         {{ producto.presentacion_valor ? ` - ${producto.presentacion_valor}` : '' }}
