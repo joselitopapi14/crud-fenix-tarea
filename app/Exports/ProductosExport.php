@@ -7,9 +7,13 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class ProductosExport implements FromCollection, WithHeadings, WithMapping, WithStyles
+class ProductosExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithDrawings, WithEvents
 {
     public function collection()
     {
@@ -19,15 +23,21 @@ class ProductosExport implements FromCollection, WithHeadings, WithMapping, With
     public function headings(): array
     {
         return [
-            'Código',
-            'Nombre',
-            'Tipo Presentación',
-            'Valor Presentación',
-            'Marca',
-            'Costo',
-            'Venta',
-            'Observaciones',
-            'Fecha Creación',
+            ['Fenix BG S.A.S - I+D+I TIC'],
+            ['Reporte de Productos - Sistema de Gestión de Inventario'],
+            ['Fecha: ' . now()->format('d/m/Y H:i:s')],
+            [],
+            [
+                'Código',
+                'Nombre',
+                'Tipo Presentación',
+                'Valor Presentación',
+                'Marca',
+                'Costo',
+                'Venta',
+                'Observaciones',
+                'Fecha Creación',
+            ]
         ];
     }
 
@@ -46,10 +56,59 @@ class ProductosExport implements FromCollection, WithHeadings, WithMapping, With
         ];
     }
 
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo Fenix');
+        $drawing->setDescription('Logo Fenix BG S.A.S');
+        $drawing->setPath(public_path('images/logo-fenix.png'));
+        $drawing->setHeight(50);
+        $drawing->setCoordinates('A1');
+
+        return $drawing;
+    }
+
     public function styles(Worksheet $sheet)
     {
         return [
-            1 => ['font' => ['bold' => true]],
+            1 => [
+                'font' => ['bold' => true, 'size' => 14, 'color' => ['rgb' => 'FF6B35']],
+            ],
+            2 => [
+                'font' => ['bold' => true, 'size' => 12],
+            ],
+            3 => [
+                'font' => ['size' => 10, 'color' => ['rgb' => '666666']],
+            ],
+            5 => [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => 'F0F0F0']
+                ],
+            ],
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                // Auto-size columns
+                foreach(range('A','I') as $col) {
+                    $event->sheet->getDelegate()->getColumnDimension($col)->setAutoSize(true);
+                }
+                
+                // Merge cells for title
+                $event->sheet->getDelegate()->mergeCells('B1:I1');
+                $event->sheet->getDelegate()->mergeCells('B2:I2');
+                $event->sheet->getDelegate()->mergeCells('B3:I3');
+                
+                // Set row heights
+                $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(40);
+                $event->sheet->getDelegate()->getRowDimension(2)->setRowHeight(20);
+                $event->sheet->getDelegate()->getRowDimension(3)->setRowHeight(15);
+            },
         ];
     }
 }

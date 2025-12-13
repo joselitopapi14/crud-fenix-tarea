@@ -92,13 +92,27 @@
 </head>
 <body>
     <div class="header">
-        <h1>Reporte de Productos</h1>
-        <p>CRUD Fenix - Inventario Completo</p>
+        <table style="width: 100%; border: none;">
+            <tr>
+                <td style="width: 200px; border: none; padding: 0;">
+                    <img src="{{ public_path('images/logo-fenix.png') }}" alt="Fenix Logo" style="height: 60px;">
+                </td>
+                <td style="border: none; text-align: center; padding: 0;">
+                    <h1>Reporte de Productos</h1>
+                    <p>Fenix BG S.A.S - I+D+I TIC</p>
+                    <p style="font-size: 10px; margin-top: 5px;">Sistema de Gestión de Inventario</p>
+                </td>
+                <td style="width: 200px; border: none; text-align: right; padding: 0; font-size: 10px; color: #666;">
+                    <strong>Fecha:</strong> {{ now()->format('d/m/Y') }}<br>
+                    <strong>Hora:</strong> {{ now()->format('H:i:s') }}<br>
+                    <strong>Total:</strong> {{ count($productos) }} productos
+                </td>
+            </tr>
+        </table>
     </div>
     
     <div class="metadata">
-        <strong>Fecha de generación:</strong> {{ now()->format('d/m/Y H:i:s') }}<br>
-        <strong>Total de productos:</strong> {{ count($productos) }}
+        <strong>Generado por:</strong> CRUD Fenix v1.0
     </div>
     
     <table>
@@ -134,8 +148,9 @@
     </table>
     
     <div class="footer">
-        <p>Documento generado automáticamente por CRUD Fenix</p>
-        <p>{{ now()->format('d/m/Y H:i:s') }}</p>
+        <p><strong>Fenix BG S.A.S</strong> - I+D+I TIC</p>
+        <p>Sistema de Gestión de Inventario - CRUD Fenix v1.0</p>
+        <p>Documento generado el {{ now()->format('d/m/Y') }} a las {{ now()->format('H:i:s') }}</p>
     </div>
 </body>
 </html>
