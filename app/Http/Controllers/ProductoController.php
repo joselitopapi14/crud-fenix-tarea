@@ -67,7 +67,15 @@ class ProductoController extends Controller
         ]);
 
         if ($request->hasFile('imagen')) {
-            $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
+            $file = $request->file('imagen');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = 'productos/' . $filename;
+            
+            // Upload to DigitalOcean Spaces
+            Storage::disk('spaces')->put($path, file_get_contents($file), 'public');
+            
+            // Get the public URL
+            $validated['imagen'] = Storage::disk('spaces')->url($path);
         }
 
         Producto::create($validated);
@@ -111,11 +119,26 @@ class ProductoController extends Controller
         ]);
 
         if ($request->hasFile('imagen')) {
-            // Eliminar imagen anterior si existe
+            // Delete old image from Spaces if exists
             if ($producto->imagen) {
-                Storage::disk('public')->delete($producto->imagen);
+                $oldPath = parse_url($producto->imagen, PHP_URL_PATH);
+                $oldPath = ltrim($oldPath, '/');
+                // Extract path after bucket name
+                $parts = explode('/', $oldPath, 2);
+                if (count($parts) > 1) {
+                    Storage::disk('spaces')->delete($parts[1]);
+                }
             }
-            $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
+            
+            $file = $request->file('imagen');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = 'productos/' . $filename;
+            
+            // Upload to DigitalOcean Spaces
+            Storage::disk('spaces')->put($path, file_get_contents($file), 'public');
+            
+            // Get the public URL
+            $validated['imagen'] = Storage::disk('spaces')->url($path);
         }
 
         $producto->update($validated);
@@ -128,9 +151,15 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        // Eliminar imagen si existe
+        // Delete image from Spaces if exists
         if ($producto->imagen) {
-            Storage::disk('public')->delete($producto->imagen);
+            $oldPath = parse_url($producto->imagen, PHP_URL_PATH);
+            $oldPath = ltrim($oldPath, '/');
+            // Extract path after bucket name
+            $parts = explode('/', $oldPath, 2);
+            if (count($parts) > 1) {
+                Storage::disk('spaces')->delete($parts[1]);
+            }
         }
 
         $producto->delete();

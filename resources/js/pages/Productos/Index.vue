@@ -162,7 +162,7 @@ const openEditDialog = (producto: Producto) => {
   editForm.marca = producto.marca || '';
   editForm.observaciones = producto.observaciones || '';
   editForm.imagen = null;
-  imagePreview.value = producto.imagen ? `/storage/${producto.imagen}` : null;
+  imagePreview.value = producto.imagen || null;
   isEditDialogOpen.value = true;
 };
 
@@ -173,7 +173,7 @@ const confirmDelete = (producto: Producto) => {
 
 const viewImage = (producto: Producto) => {
   if (producto.imagen) {
-    selectedImage.value = `/storage/${producto.imagen}`;
+    selectedImage.value = producto.imagen;
     isImageDialogOpen.value = true;
   }
 };
@@ -334,12 +334,13 @@ const formatCurrency = (value: number) => {
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Marca</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Costo</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Venta</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Observaciones</th>
                     <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Acciones</th>
                   </tr>
                 </thead>
                 <tbody class="[&_tr:last-child]:border-0">
                   <tr v-if="productos.data.length === 0" class="border-b transition-colors hover:bg-muted/50">
-                    <td colspan="8" class="p-8 text-center text-muted-foreground">
+                    <td colspan="9" class="p-8 text-center text-muted-foreground">
                       No se encontraron productos
                     </td>
                   </tr>
@@ -370,6 +371,25 @@ const formatCurrency = (value: number) => {
                     <td class="p-4 align-middle">{{ producto.marca || '-' }}</td>
                     <td class="p-4 align-middle text-right">{{ formatCurrency(producto.valor_costo) }}</td>
                     <td class="p-4 align-middle text-right">{{ formatCurrency(producto.valor_venta) }}</td>
+                    <td class="p-4 align-middle">
+                      <Popover v-if="producto.observaciones">
+                        <PopoverTrigger as-child>
+                          <Button variant="ghost" size="sm" class="h-8 px-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="ml-1">Ver</span>
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent class="w-80">
+                          <div class="space-y-2">
+                            <h4 class="font-medium text-sm">Observaciones</h4>
+                            <p class="text-sm text-muted-foreground whitespace-pre-wrap">{{ producto.observaciones }}</p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      <span v-else class="text-muted-foreground text-xs">-</span>
+                    </td>
                     <td class="p-4 align-middle">
                       <div class="flex items-center justify-center gap-2">
                         <Button @click="openEditDialog(producto)" variant="ghost" size="icon">
