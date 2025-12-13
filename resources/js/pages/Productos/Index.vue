@@ -271,10 +271,10 @@ const deleteProductoImage = () => {
       <!-- Header con Logo -->
       <div class="container mx-auto mb-6">
         <div class="flex items-center justify-center gap-4 mb-8">
-          <img src="/images/logo-fenix.png" alt="Fenix Logo" class="h-16 drop-shadow-2xl" />
-          <div class="text-white">
-            <h1 class="text-4xl font-bold drop-shadow-lg">CRUD Fenix</h1>
-            <p class="text-white/90 text-sm drop-shadow-md">Sistema de Gestión de Inventario</p>
+          <img src="/images/logo-fenix.png" alt="Fenix Logo" class="h-16 drop-shadow-lg" />
+          <div class="text-gray-800">
+            <h1 class="text-4xl font-bold">CRUD Fenix</h1>
+            <p class="text-gray-700 text-sm">Sistema de Gestión de Inventario</p>
           </div>
         </div>
       </div>

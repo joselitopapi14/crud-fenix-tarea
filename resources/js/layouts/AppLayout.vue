@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/sonner';
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-orange-500 via-red-500 to-orange-600">
+  <div class="min-h-screen bg-gradient-to-b from-white via-orange-400 to-red-500">
     <Toaster />
     <main>
       <slot />
