@@ -104,5 +104,16 @@ EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=3 \
     CMD php artisan inspire || exit 1
 
-# Comando de inicio
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Script de inicio con verificaciones
+CMD set -e && \
+    echo "🔍 Verificando configuración..." && \
+    php artisan --version && \
+    echo "✅ Laravel OK" && \
+    php artisan config:cache && \
+    echo "✅ Config cacheado" && \
+    php artisan route:cache && \
+    echo "✅ Rutas cacheadas" && \
+    php artisan view:cache && \
+    echo "✅ Vistas cacheadas" && \
+    echo "🚀 Iniciando servidor en 0.0.0.0:8000..." && \
+    exec php artisan serve --host=0.0.0.0 --port=8000
