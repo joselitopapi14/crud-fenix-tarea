@@ -299,7 +299,7 @@ const deleteProductoImage = () => {
                     Filtros
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent class="w-80">
+                <PopoverContent class="w-80 bg-white/95 backdrop-blur-xl border-white/30">
                   <div class="space-y-4">
                     <h4 class="font-medium leading-none">Filtrar productos</h4>
                     
@@ -358,11 +358,11 @@ const deleteProductoImage = () => {
         </CardHeader>
         <CardContent>
           <!-- Table -->
-          <div class="rounded-md border">
+          <div class="rounded-md border border-gray-200">
             <div class="relative w-full overflow-x-auto">
               <table class="w-full caption-bottom text-sm">
                 <thead class="[&_tr]:border-b">
-                  <tr class="border-b transition-colors hover:bg-muted/50">
+                  <tr class="border-b border-gray-200">
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Código</th>
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre</th>
                     <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Imagen</th>
@@ -375,21 +375,20 @@ const deleteProductoImage = () => {
                   </tr>
                 </thead>
                 <tbody class="[&_tr:last-child]:border-0">
-                  <tr v-if="productos.data.length === 0" class="border-b transition-colors hover:bg-muted/50">
+                  <tr v-if="productos.data.length === 0" class="border-b border-gray-200">
                     <td colspan="9" class="p-8 text-center text-muted-foreground">
                       No se encontraron productos
                     </td>
                   </tr>
-                  <tr v-for="producto in productos.data" :key="producto.id" class="border-b transition-colors hover:bg-muted/50">
+                  <tr v-for="producto in productos.data" :key="producto.id" class="border-b border-gray-200 transition-colors hover:bg-gray-100/50">
                     <td class="p-4 align-middle font-medium">{{ producto.codigo }}</td>
                     <td class="p-4 align-middle">{{ producto.nombre }}</td>
                     <td class="p-4 align-middle text-center">
                       <Button 
                         v-if="producto.imagen" 
                         @click="viewImage(producto)" 
-                        variant="ghost" 
                         size="icon"
-                        class="h-8 w-8"
+                        class="h-8 w-8 bg-black text-white hover:bg-gray-800"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -428,12 +427,12 @@ const deleteProductoImage = () => {
                     </td>
                     <td class="p-4 align-middle">
                       <div class="flex items-center justify-center gap-2">
-                        <Button @click="openEditDialog(producto)" variant="ghost" size="icon">
+                        <Button @click="openEditDialog(producto)" size="icon" class="bg-black text-white hover:bg-gray-800">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
                         </Button>
-                        <Button @click="confirmDelete(producto)" variant="ghost" size="icon" class="text-destructive">
+                        <Button @click="confirmDelete(producto)" size="icon" class="bg-black text-white hover:bg-red-600">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
