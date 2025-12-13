@@ -4,14 +4,13 @@
 FROM node:24-alpine AS frontend
 WORKDIR /app
 
-# Copia solo los archivos de dependencias primero (cache layer)
+# Copia archivos de dependencias
 COPY package*.json ./
+
 RUN npm ci --prefer-offline --no-audit
 
-# Copia el código fuente
-COPY resources ./resources
-COPY vite.config.js ./
-COPY public ./public
+# Copia TODO el código fuente (más seguro)
+COPY . .
 
 # Build de producción
 RUN npm run build
@@ -76,31 +75,22 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
 
 WORKDIR /var/www
 
-# ⚠️ CRÍTICO: Copiar archivos en el orden correcto
-# 1. Copiar estructura base (excluyendo vendor y node_modules)
-COPY --chown=www-data:www-data artisan ./
-COPY --chown=www-data:www-data bootstrap ./bootstrap
-COPY --chown=www-data:www-data config ./config
-COPY --chown=www-data:www-data database ./database
-COPY --chown=www-data:www-data public ./public
-COPY --chown=www-data:www-data resources ./resources
-COPY --chown=www-data:www-data routes ./routes
-COPY --chown=www-data:www-data storage ./storage
-COPY --chown=www-data:www-data app ./app
-COPY --chown=www-data:www-data composer.json composer.lock ./
-COPY --chown=www-data:www-data vite.config.js ./
-COPY --chown=www-data:www-data .env.example ./.env
+# ⚠️ ORDEN CORREGIDO: Primero copiamos vendor y build, LUEGO el resto
+# Esto evita que se sobrescriban con versiones locales/desactualizadas
 
-# 2. Copiar vendor desde el stage de backend
+# 1. Copiar vendor desde el stage de backend
 COPY --from=backend --chown=www-data:www-data /app/vendor ./vendor
 
-# 3. Copiar assets compilados desde el stage de frontend
+# 2. Copiar assets compilados desde el stage de frontend
 COPY --from=frontend --chown=www-data:www-data /app/public/build ./public/build
 
+# 3. Copiar el resto del código (esto NO sobrescribirá vendor ni build)
+COPY --chown=www-data:www-data . .
+
 # Permisos críticos para Laravel
-RUN mkdir -p storage/framework/{sessions,views,cache} && \
-    mkdir -p storage/logs && \
-    mkdir -p bootstrap/cache && \
+RUN mkdir -p storage/framework/{sessions,views,cache} \
+    storage/logs \
+    bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
