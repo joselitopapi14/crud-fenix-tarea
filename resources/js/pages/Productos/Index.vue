@@ -398,8 +398,11 @@ const formatCurrency = (value: number) => {
                 :variant="link.active ? 'default' : 'outline'"
                 :disabled="!link.url"
                 size="sm"
-                v-html="link.label"
-              />
+              >
+                <span v-if="link.label.includes('Previous')">‹ Anterior</span>
+                <span v-else-if="link.label.includes('Next')">Siguiente ›</span>
+                <span v-else>{{ link.label }}</span>
+              </Button>
             </div>
           </div>
         </CardContent>
