@@ -1,0 +1,20 @@
+
+> build
+> vite build
+
+[36mvite v7.2.7 [32mbuilding client environment for production...[36m[39m
+[32m✓[39m 0 modules transformed.
+✗ Build failed in 508ms
+error during build:
+[@laravel/vite-plugin-wayfinder] [plugin @laravel/vite-plugin-wayfinder] Error generating types: Error: Command failed: php artisan wayfinder:generate --with-form
+
+    at getRollupError (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at Object.error (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/node-entry.js:22129:20)
+    at runCommand (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/@laravel/vite-plugin-wayfinder/dist/index.mjs:2101:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Promise.all (index 2)
+    at async PluginDriver.hookParallel (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/node-entry.js:22361:9)
+    at async file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/node-entry.js:23333:13
+    at async catchUnfinishedHookActions (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/node-entry.js:22805:16)
+    at async rollupInternal (file:///C:/Users/jose1/Herd/crud-fenix/node_modules/rollup/dist/es/shared/node-entry.js:23330:5)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -102,11 +102,16 @@ const editForm = useForm({
 });
 
 // Watch for flash messages
-watch(() => props, (newProps: any) => {
-  if (newProps.$page?.props?.flash?.success) {
-    toast.success(newProps.$page.props.flash.success);
+
+
+const page = usePage();
+
+// Watch for flash messages
+watch(() => page.props.flash, (flash: any) => {
+  if (flash?.success) {
+    toast.success(flash.success);
   }
-}, { deep: true, immediate: true });
+}, { deep: true });
 
 const handleImageChange = (event: Event, isEdit: boolean = false) => {
   const target = event.target as HTMLInputElement;
