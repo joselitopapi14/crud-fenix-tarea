@@ -74,6 +74,6 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 USER www-data
 
-EXPOSE 9000
+EXPOSE 8000
 
 CMD ["php-fpm"]
