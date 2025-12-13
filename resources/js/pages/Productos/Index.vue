@@ -237,6 +237,30 @@ const formatCurrency = (value: number) => {
     minimumFractionDigits: 0,
   }).format(value);
 };
+
+const clearImage = (isEdit: boolean = false) => {
+  const form = isEdit ? editForm : createForm;
+  form.imagen = null;
+  imagePreview.value = null;
+  
+  // Reset file input
+  const fileInput = document.getElementById(isEdit ? 'edit-imagen' : 'create-imagen') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
+};
+
+const deleteProductoImage = () => {
+  if (!selectedProducto.value) return;
+  
+  router.delete(`/productos/${selectedProducto.value.id}/imagen`, {
+    preserveScroll: true,
+    onSuccess: () => {
+      imagePreview.value = null;
+      toast.success('Imagen eliminada exitosamente');
+    },
+  });
+};
 </script>
 
 <template>
@@ -244,8 +268,8 @@ const formatCurrency = (value: number) => {
     <Head title="Productos" />
 
     <div class="container mx-auto py-8 px-4 space-y-6">
-      <!-- Header Card -->
-      <Card>
+      <!-- Header Card with Glassmorphism -->
+      <Card class="bg-white/90 backdrop-blur-md shadow-2xl border-white/20">
         <CardHeader>
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -490,8 +514,17 @@ const formatCurrency = (value: number) => {
               <Label for="create-imagen">Imagen</Label>
               <div class="flex gap-4">
                 <Input id="create-imagen" type="file" accept="image/*" @change="handleImageChange" class="flex-1" />
-                <div v-if="imagePreview" class="w-20 h-20 rounded border overflow-hidden">
+                <div v-if="imagePreview" class="relative w-20 h-20 rounded border overflow-hidden group">
                   <img :src="imagePreview" alt="Preview" class="w-full h-full object-cover" />
+                  <button
+                    @click="clearImage(false)"
+                    type="button"
+                    class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -566,13 +599,22 @@ const formatCurrency = (value: number) => {
 
             <div class="space-y-2 col-span-2">
               <Label for="edit-imagen">Imagen</Label>
-              <div class="flex gap-4">
+              <div class="flex gap-4 items-start">
                 <div class="flex-1 space-y-1">
                   <Input id="edit-imagen" type="file" accept="image/*" @change="(e: Event) => handleImageChange(e, true)" />
                   <p class="text-xs text-muted-foreground">Deja vacío para mantener la imagen actual</p>
                 </div>
-                <div v-if="imagePreview" class="w-20 h-20 rounded border overflow-hidden">
+                <div v-if="imagePreview" class="relative w-20 h-20 rounded border overflow-hidden group">
                   <img :src="imagePreview" alt="Preview" class="w-full h-full object-cover" />
+                  <button
+                    @click="deleteProductoImage"
+                    type="button"
+                    class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>

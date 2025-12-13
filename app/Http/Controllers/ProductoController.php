@@ -193,4 +193,25 @@ class ProductoController extends Controller
             'productos_' . now()->format('Y-m-d_His') . '.xlsx'
         );
     }
+
+    /**
+     * Delete product image
+     */
+    public function deleteImage(Producto $producto)
+    {
+        if ($producto->imagen) {
+            // Delete from Spaces
+            $oldPath = parse_url($producto->imagen, PHP_URL_PATH);
+            $oldPath = ltrim($oldPath, '/');
+            $parts = explode('/', $oldPath, 2);
+            if (count($parts) > 1) {
+                Storage::disk('spaces')->delete($parts[1]);
+            }
+            
+            // Update database
+            $producto->update(['imagen' => null]);
+        }
+
+        return back()->with('success', 'Imagen eliminada exitosamente');
+    }
 }

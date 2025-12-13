@@ -13,6 +13,9 @@ Route::get('/', function () {
 Route::get('productos/export/pdf', [ProductoController::class, 'exportPdf'])->name('productos.export.pdf');
 Route::get('productos/export/excel', [ProductoController::class, 'exportExcel'])->name('productos.export.excel');
 
+// Ruta para eliminar imagen de producto
+Route::delete('productos/{producto}/imagen', [ProductoController::class, 'deleteImage'])->name('productos.delete-image');
+
 // Rutas de productos
 Route::resource('productos', ProductoController::class);
 
