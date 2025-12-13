@@ -20,6 +20,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'vue-sonner';
 
 interface Producto {
@@ -73,7 +82,7 @@ const filterForm = ref({
   codigo: props.filters.codigo || '',
   nombre: props.filters.nombre || '',
   marca: props.filters.marca || '',
-  presentacion_tipo: props.filters.presentacion_tipo || '',
+  presentacion_tipo: props.filters.presentacion_tipo || 'all',
 });
 
 const createForm = useForm({
@@ -129,7 +138,12 @@ const handleImageChange = (event: Event, isEdit: boolean = false) => {
 };
 
 const applyFilters = () => {
-  router.get('/productos', filterForm.value, {
+  const filtersCallback = { ...filterForm.value };
+  if (filtersCallback.presentacion_tipo === 'all') {
+    filtersCallback.presentacion_tipo = '';
+  }
+  
+  router.get('/productos', filtersCallback, {
     preserveState: true,
     preserveScroll: true,
   });
@@ -140,7 +154,7 @@ const clearFilters = () => {
     codigo: '',
     nombre: '',
     marca: '',
-    presentacion_tipo: '',
+    presentacion_tipo: 'all',
   };
   router.get('/productos');
 };
@@ -320,11 +334,16 @@ const deleteProductoImage = () => {
 
                     <div class="space-y-2">
                       <Label for="filter-tipo">Tipo de Presentación</Label>
-                      <select id="filter-tipo" v-model="filterForm.presentacion_tipo" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                        <option value="">Todos</option>
-                        <option value="unidad">Unidad</option>
-                        <option value="peso">Peso</option>
-                      </select>
+                      <Select v-model="filterForm.presentacion_tipo">
+                        <SelectTrigger id="filter-tipo">
+                          <SelectValue placeholder="Seleccionar tipo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Todos</SelectItem>
+                          <SelectItem value="unidad">Unidad</SelectItem>
+                          <SelectItem value="peso">Peso</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div class="flex gap-2">
@@ -494,10 +513,15 @@ const deleteProductoImage = () => {
 
             <div class="space-y-2">
               <Label for="create-tipo">Tipo de Presentación *</Label>
-              <select id="create-tipo" v-model="createForm.presentacion_tipo" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                <option value="unidad">Unidad</option>
-                <option value="peso">Peso</option>
-              </select>
+              <Select v-model="createForm.presentacion_tipo">
+                <SelectTrigger id="create-tipo">
+                  <SelectValue placeholder="Seleccionar..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="unidad">Unidad</SelectItem>
+                  <SelectItem value="peso">Peso</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div class="space-y-2">
@@ -581,10 +605,15 @@ const deleteProductoImage = () => {
 
             <div class="space-y-2">
               <Label for="edit-tipo">Tipo de Presentación *</Label>
-              <select id="edit-tipo" v-model="editForm.presentacion_tipo" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                <option value="unidad">Unidad</option>
-                <option value="peso">Peso</option>
-              </select>
+              <Select v-model="editForm.presentacion_tipo">
+                <SelectTrigger id="edit-tipo">
+                  <SelectValue placeholder="Seleccionar..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="unidad">Unidad</SelectItem>
+                  <SelectItem value="peso">Peso</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div class="space-y-2">
