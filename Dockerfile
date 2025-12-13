@@ -36,7 +36,7 @@ RUN composer dump-autoload --optimize --classmap-authoritative
 # ============================================
 # Stage 3: Runtime (Application)
 # ============================================
-FROM php:8.3-alpine
+FROM php:8.4-alpine
 
 # Instalación de extensiones necesarias
 RUN apk add --no-cache \
