@@ -384,12 +384,12 @@ const deleteProductoImage = () => {
                   <tr class="border-b border-gray-200">
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap">Código</th>
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground min-w-[150px]">Nombre</th>
-                    <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden md:table-cell">Imagen</th>
+                    <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Imagen</th>
                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Presentación</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden xl:table-cell">Marca</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Marca</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Costo</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Venta</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden lg:table-cell">Observaciones</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Observaciones</th>
                     <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Acciones</th>
                   </tr>
                 </thead>
@@ -404,7 +404,7 @@ const deleteProductoImage = () => {
                     <td class="p-4 align-middle min-w-[150px]">
                       <div class="font-medium">{{ producto.nombre }}</div>
                     </td>
-                    <td class="p-4 align-middle text-center hidden md:table-cell">
+                    <td class="p-4 align-middle text-center">
                       <Button 
                         v-if="producto.imagen" 
                         @click="viewImage(producto)" 
@@ -424,10 +424,10 @@ const deleteProductoImage = () => {
                         {{ producto.presentacion_valor ? ` - ${producto.presentacion_valor}` : '' }}
                       </Badge>
                     </td>
-                    <td class="p-4 align-middle hidden xl:table-cell">{{ producto.marca || '-' }}</td>
+                    <td class="p-4 align-middle">{{ producto.marca || '-' }}</td>
                     <td class="p-4 align-middle text-right whitespace-nowrap">{{ formatCurrency(producto.valor_costo) }}</td>
                     <td class="p-4 align-middle text-right whitespace-nowrap">{{ formatCurrency(producto.valor_venta) }}</td>
-                    <td class="p-4 align-middle hidden lg:table-cell">
+                    <td class="p-4 align-middle">
                       <Popover v-if="producto.observaciones">
                         <PopoverTrigger as-child>
                           <Button variant="ghost" size="sm" class="h-8 px-2">
