@@ -286,9 +286,9 @@ const deleteProductoImage = () => {
       <div class="container mx-auto mb-6">
         <div class="flex items-center justify-center gap-4 mb-8">
           <img src="/images/logo-fenix.png" alt="Fenix Logo" class="h-16 drop-shadow-lg" />
-          <div class="text-gray-800">
-            <h1 class="text-4xl font-bold">CRUD Fenix</h1>
-            <p class="text-gray-700 text-sm">Sistema de Gestión de Inventario</p>
+          <div class="text-gray-800 text-center md:text-left">
+            <h1 class="text-2xl md:text-4xl font-bold">CRUD Fenix</h1>
+            <p class="text-gray-700 text-xs md:text-sm">Sistema de Gestión de Inventario</p>
           </div>
         </div>
       </div>
@@ -302,7 +302,7 @@ const deleteProductoImage = () => {
               <CardTitle class="text-3xl">Gestión de Productos</CardTitle>
               <CardDescription>Administra tu inventario de productos</CardDescription>
             </div>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2 justify-center md:justify-end">
               <!-- Filtros -->
               <Popover>
                 <PopoverTrigger as-child>
@@ -382,14 +382,14 @@ const deleteProductoImage = () => {
               <table class="w-full caption-bottom text-sm">
                 <thead class="[&_tr]:border-b">
                   <tr class="border-b border-gray-200">
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Código</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nombre</th>
-                    <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Imagen</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Presentación</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Marca</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap">Código</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground min-w-[150px]">Nombre</th>
+                    <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground hidden md:table-cell">Imagen</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden lg:table-cell">Presentación</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden xl:table-cell">Marca</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Costo</th>
                     <th class="h-12 px-4 text-right align-middle font-medium text-muted-foreground">Venta</th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Observaciones</th>
+                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground hidden lg:table-cell">Observaciones</th>
                     <th class="h-12 px-4 text-center align-middle font-medium text-muted-foreground">Acciones</th>
                   </tr>
                 </thead>
@@ -400,9 +400,17 @@ const deleteProductoImage = () => {
                     </td>
                   </tr>
                   <tr v-for="producto in productos.data" :key="producto.id" class="border-b border-gray-200 transition-colors hover:bg-gray-50/80">
-                    <td class="p-4 align-middle font-medium">{{ producto.codigo }}</td>
-                    <td class="p-4 align-middle">{{ producto.nombre }}</td>
-                    <td class="p-4 align-middle text-center">
+                    <td class="p-4 align-middle font-medium whitespace-nowrap">{{ producto.codigo }}</td>
+                    <td class="p-4 align-middle min-w-[150px]">
+                      <div class="font-medium">{{ producto.nombre }}</div>
+                      <div class="lg:hidden text-xs text-muted-foreground mt-1">
+                        <span v-if="producto.marca" class="mr-2">{{ producto.marca }}</span>
+                        <span class="inline-flex items-center rounded-full border px-2 py-0.5 font-semibold transition-colors border-transparent bg-secondary text-secondary-foreground text-[10px]">
+                          {{ producto.presentacion_tipo }}
+                        </span>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle text-center hidden md:table-cell">
                       <Button 
                         v-if="producto.imagen" 
                         @click="viewImage(producto)" 
@@ -416,16 +424,16 @@ const deleteProductoImage = () => {
                       </Button>
                       <span v-else class="text-muted-foreground text-xs">-</span>
                     </td>
-                    <td class="p-4 align-middle">
+                    <td class="p-4 align-middle hidden lg:table-cell">
                       <Badge variant="secondary">
                         {{ producto.presentacion_tipo }}
                         {{ producto.presentacion_valor ? ` - ${producto.presentacion_valor}` : '' }}
                       </Badge>
                     </td>
-                    <td class="p-4 align-middle">{{ producto.marca || '-' }}</td>
-                    <td class="p-4 align-middle text-right">{{ formatCurrency(producto.valor_costo) }}</td>
-                    <td class="p-4 align-middle text-right">{{ formatCurrency(producto.valor_venta) }}</td>
-                    <td class="p-4 align-middle">
+                    <td class="p-4 align-middle hidden xl:table-cell">{{ producto.marca || '-' }}</td>
+                    <td class="p-4 align-middle text-right whitespace-nowrap">{{ formatCurrency(producto.valor_costo) }}</td>
+                    <td class="p-4 align-middle text-right whitespace-nowrap">{{ formatCurrency(producto.valor_venta) }}</td>
+                    <td class="p-4 align-middle hidden lg:table-cell">
                       <Popover v-if="producto.observaciones">
                         <PopoverTrigger as-child>
                           <Button variant="ghost" size="sm" class="h-8 px-2">
@@ -465,7 +473,7 @@ const deleteProductoImage = () => {
           </div>
 
           <!-- Pagination -->
-          <div class="flex items-center justify-between mt-4">
+          <div class="flex flex-col sm:flex-row items-center justify-between mt-4 gap-4">
             <div class="text-sm text-muted-foreground">
               Mostrando {{ productos.data.length }} de {{ productos.total }} productos
             </div>
