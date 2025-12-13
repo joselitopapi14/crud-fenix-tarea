@@ -267,9 +267,21 @@ const deleteProductoImage = () => {
   <AppLayout>
     <Head title="Productos" />
 
-    <div class="container mx-auto py-8 px-4 space-y-6">
-      <!-- Header Card with Glassmorphism -->
-      <Card class="bg-white/90 backdrop-blur-md shadow-2xl border-white/20">
+    <div class="min-h-screen py-8 px-4">
+      <!-- Header con Logo -->
+      <div class="container mx-auto mb-6">
+        <div class="flex items-center justify-center gap-4 mb-8">
+          <img src="/images/logo-fenix.png" alt="Fenix Logo" class="h-16 drop-shadow-2xl" />
+          <div class="text-white">
+            <h1 class="text-4xl font-bold drop-shadow-lg">CRUD Fenix</h1>
+            <p class="text-white/90 text-sm drop-shadow-md">Sistema de Gestión de Inventario</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Card with Glassmorphism -->
+      <div class="container mx-auto">
+        <Card class="bg-white/95 backdrop-blur-xl shadow-2xl border border-white/30 text-gray-900">
         <CardHeader>
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -456,6 +468,7 @@ const deleteProductoImage = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
 
     <!-- Create Dialog -->
