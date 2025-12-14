@@ -250,7 +250,7 @@ const formatCurrency = (value: number) => {
     currency: 'COP',
     minimumFractionDigits: 0,
   }).format(value);
-};
+}; 
 
 const clearImage = (isEdit: boolean = false) => {
   const form = isEdit ? editForm : createForm;
